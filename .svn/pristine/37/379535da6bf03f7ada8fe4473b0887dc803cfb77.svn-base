@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace DTcms.Web.aspx
+{
+    class MyUser
+    {
+        private string userAccount;
+        private string password;
+        private string p;
+
+        public MyUser(string userAccount, string password, string p)
+        {
+            // TODO: Complete member initialization
+            this.userAccount = userAccount;
+            this.password = password;
+            this.p = p;
+        }
+    }
+}

@@ -1,0 +1,7 @@
+E:\MasterSite\DTcms.Model\bin\Release\DTcms.Model.dll
+E:\MasterSite\DTcms.Model\bin\Release\DTcms.Model.pdb
+E:\MasterSite\DTcms.Model\bin\Release\DTcms.Common.dll
+E:\MasterSite\DTcms.Model\bin\Release\DTcms.Common.pdb
+E:\MasterSite\DTcms.Model\obj\Release\DTcms.Model.csprojResolveAssemblyReference.cache
+E:\MasterSite\DTcms.Model\obj\Release\DTcms.Model.dll
+E:\MasterSite\DTcms.Model\obj\Release\DTcms.Model.pdb

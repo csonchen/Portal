@@ -1,0 +1,172 @@
+﻿using System;
+using System.Collections.Generic;
+using System.DirectoryServices;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace DTcms.Web.aspx
+{
+    public partial class exe : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            bool flag = IsPass("INSERT", "85512188");
+
+            bool flag2 = IsPass("wuzl","wu1989");
+        }
+
+        public bool IsPass(string userAccount, string password)
+
+        {
+
+ 
+
+                    string DomainName = "DC=APOLLO,DC=COM,DC=CN";
+
+                    string ADPath = "LDAP://10.8.8.8";
+
+                    string ADDomain = "APOLLO";
+
+                    //获得当前域中的路径
+
+                    string _ADPath = ADPath + "/" + ADDomain;
+
+ 
+
+                    string domainAndUsername;
+
+                    bool hasDomain = false;
+
+                    if (userAccount.StartsWith(DomainName, StringComparison.CurrentCultureIgnoreCase))
+
+                    {
+
+                        hasDomain = true;
+
+                    }
+
+                    if (hasDomain)
+
+                    {
+
+                        domainAndUsername = userAccount;
+
+                    }
+
+                    else
+
+                    {
+
+                        domainAndUsername = DomainName + @"\" + userAccount;
+
+                    }
+
+                    //string path = "LDAP://10.8.8.8/DC=APOLLO,DC=COM,DC=CN";
+            
+                    DirectoryEntry entry = new DirectoryEntry(_ADPath, domainAndUsername, password);
+
+                    DirectorySearcher search = new DirectorySearcher(entry);
+
+                    if (hasDomain)
+
+                    {
+
+                        userAccount = userAccount.Substring(DomainName.Length + 1);
+
+                    }
+
+                    search.Filter = "(sAMAccountName=" + userAccount + ")";
+
+                    search.PropertiesToLoad.Add("displayName");
+
+                    SearchResult adUser = null;
+                    
+                    string _error = "";
+
+                    MyUser _myUser = null;
+
+                    try
+
+                    { 
+
+                        adUser = search.FindOne();
+
+                        if (adUser == null)
+
+                        {
+
+                            _error = "域认证失败";
+
+                        }
+
+                        else
+
+                        {
+
+                            if (Convert.ToInt32(adUser.Properties["userAccountControl"][0]) == 2)
+
+                            {
+
+                                _myUser = new MyUser(userAccount, password, adUser.Properties["displayName"].ToString());
+
+                            }
+
+                            else
+
+                            {
+
+                                _error = "此用户已禁用";
+
+                            }
+
+                            adUser = null;
+
+                        }
+
+                    }
+
+                    catch (Exception ex)
+
+                    {
+
+                        _error = ex.Message;
+
+                        adUser = null;
+
+                    }
+
+                    finally
+
+                    {
+
+                        entry.Close();
+
+                        entry = null;
+
+                        search.Dispose();
+
+                        search = null;
+
+                    }
+
+                    return adUser != null;
+
+}
+
+        public void ff() { 
+             using (DirectoryEntry root = new DirectoryEntry("LDAP:"))  
+       {  
+            foreach (DirectoryEntry domain in root.Children)  
+           {  
+                Console.WriteLine("Domain | WorkGroup:/t" + domain.Name);  
+               foreach (DirectoryEntry computer in domain.Children)  
+               {  
+                    Console.WriteLine("Computer:/t" + computer.Name);  
+                }  
+            }  
+        }  
+
+        }
+    }
+}
